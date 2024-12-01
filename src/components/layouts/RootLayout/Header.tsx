@@ -1,8 +1,10 @@
 import { Link, NavLink } from "react-router-dom"
 import { routes } from "@/lib/routes"
 import { cn } from "@/lib/utils"
-import { useAuth } from "@/hooks/useAuth"
 import { Button } from "@/components/ui"
+import { useAppDispatch, useAppSelector } from "@/hooks/redux"
+import { selectUser } from "@/redux/user/selectors"
+import { logOut } from "@/redux/user/actions"
 
 const headerLinks = [
   { link: routes.home, label: "About" },
@@ -10,13 +12,14 @@ const headerLinks = [
 ] as const
 
 export const Header = () => {
-  const { user, logout } = useAuth()
+  const user = useAppSelector(selectUser)
+  const dispatch = useAppDispatch()
 
   const authButton = user ? (
     <Button
       variant="outline"
       className="cursor-pointer"
-      onClick={() => logout()}
+      onClick={() => dispatch(logOut())}
     >
       Log out
     </Button>

@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom"
 import { Toaster } from "@/components/ui"
-import { AuthProvider } from "@/hooks/useAuth"
+import { AuthProvider } from "@/components/providers"
 import { NotesProvider } from "@/hooks/useNotes"
 import { Header } from "./Header"
 import { Footer } from "./Footer"

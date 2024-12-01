@@ -2,14 +2,14 @@ import { Link, useRouteError } from "react-router-dom"
 import { getErrorMessage } from "./errorMessage"
 import { routes } from "@/lib/routes"
 import { Button, Heading } from "@/components/ui"
-import { useAuth } from "@/hooks/useAuth"
 
 type ErrorProps = {
   text?: string
 }
 
 export const Error: React.FC<ErrorProps> = ({ text }) => {
-  const { user } = useAuth()
+  // const { user } = useAuth()
+  const user = "a"
   const error = useRouteError()
   const errorMessage = getErrorMessage(error)
 

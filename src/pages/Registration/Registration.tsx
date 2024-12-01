@@ -12,17 +12,21 @@ import {
   FormMessage,
 } from "@/components/ui"
 import { Input } from "@/components/ui"
-import { useMutation } from "@tanstack/react-query"
-import { register } from "@/api/mutations"
 import { Link, useNavigate } from "react-router-dom"
 import { routes } from "@/lib/routes"
-import { useAuth } from "@/hooks/useAuth"
 import { RegistrationFormSchema } from "@/constants/schemas"
 import { getUsersByEmail } from "@/api/queries"
+import { fetchRegister } from "@/redux/user/actions"
+import { useAppDispatch, useAppSelector } from "@/hooks/redux"
+import { selectIsLoading } from "@/redux/user/selectors"
 
 type UserValues = z.infer<typeof RegistrationFormSchema>
 
 export const Registration = () => {
+  const navigate = useNavigate()
+  const loading = useAppSelector(selectIsLoading)
+  const dispatch = useAppDispatch()
+
   const form = useForm<UserValues>({
     resolver: zodResolver(RegistrationFormSchema),
     defaultValues: {
@@ -30,27 +34,6 @@ export const Registration = () => {
       password: "",
       repeatPassword: "",
     },
-  })
-  const navigate = useNavigate()
-  const { login } = useAuth()
-
-  const { mutate: registerUser, isPending } = useMutation({
-    mutationFn: register,
-    onSuccess: (user) => {
-      toast({
-        title: "You have successfully registered",
-      })
-
-      login(user)
-
-      navigate(routes.home, { replace: true })
-    },
-    onError: (error) =>
-      toast({
-        title: "Registration failed. Please try again later",
-        description: error.message,
-        variant: "destructive",
-      }),
   })
 
   const onSubmit = async (user: UserValues) => {
@@ -67,7 +50,9 @@ export const Registration = () => {
         )
       }
 
-      registerUser(user)
+      dispatch(fetchRegister(user)).then(() => {
+        navigate(routes.home, { replace: true })
+      })
     } catch (error) {
       const errorMessage = (error as Error).message
 
@@ -125,7 +110,7 @@ export const Registration = () => {
               </FormItem>
             )}
           />
-          <Button type="submit" disabled={isPending}>
+          <Button type="submit" disabled={loading}>
             Register
           </Button>
           <div className="text-center text-muted-foreground">

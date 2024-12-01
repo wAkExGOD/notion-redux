@@ -2,7 +2,6 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
-import { toast } from "@/hooks/useToast"
 import { Button, Heading } from "@/components/ui"
 import {
   Form,
@@ -13,17 +12,17 @@ import {
   FormMessage,
 } from "@/components/ui"
 import { Input } from "@/components/ui"
-import { useQuery } from "@tanstack/react-query"
-import { logIn } from "@/api/queries"
-import { UserEntityToAuth } from "@/types"
-import { useRef } from "react"
-import { useAuth } from "@/hooks/useAuth"
 import { LogInFormSchema } from "@/constants/schemas"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { routes } from "@/lib/routes"
+import { fetchLogIn } from "@/redux/user/actions"
+import { useAppDispatch, useAppSelector } from "@/hooks/redux"
+import { selectIsLoading } from "@/redux/user/selectors"
 
 export const LogIn = () => {
-  const userRef = useRef<UserEntityToAuth>()
+  const navigate = useNavigate()
+  const isLoading = useAppSelector(selectIsLoading)
+  const dispatch = useAppDispatch()
   const form = useForm<z.infer<typeof LogInFormSchema>>({
     resolver: zodResolver(LogInFormSchema),
     defaultValues: {
@@ -31,44 +30,11 @@ export const LogIn = () => {
       password: "",
     },
   })
-  const { login } = useAuth()
-
-  const { isLoading, refetch: logInUser } = useQuery({
-    staleTime: 0,
-    enabled: Boolean(userRef?.current?.email),
-    queryKey: ["logInUser"],
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
-    queryFn: async () => {
-      if (!userRef.current) {
-        return
-      }
-
-      const data = await logIn(userRef.current)
-
-      if (!data || data.length === 0) {
-        return toast({
-          title: "Error: Incorrect login credentials. Please try again.",
-          variant: "destructive",
-        })
-      }
-
-      const user = data[0]
-
-      toast({
-        title: "You have logged in successfully!",
-      })
-
-      login(user)
-
-      return user
-    },
-  })
 
   const onSubmit = async (user: z.infer<typeof LogInFormSchema>) => {
-    userRef.current = user
-
-    logInUser()
+    dispatch(fetchLogIn(user)).then(() => {
+      navigate(routes.home)
+    })
   }
 
   return (

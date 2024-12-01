@@ -1,12 +1,13 @@
 import { Navigate } from "react-router-dom"
-import { useAuth } from "@/hooks/useAuth"
 import { PropsWithChildren } from "react"
 import { routes } from "@/lib/routes"
+import { useAppSelector } from "@/hooks/redux"
+import { selectUser } from "@/redux/user/selectors"
 
 export const ProtectedRoute = ({ children }: PropsWithChildren) => {
-  const auth = useAuth()
+  const user = useAppSelector(selectUser)
 
-  if (!auth?.user) {
+  if (!user) {
     return <Navigate to={routes.logIn} />
   }
 

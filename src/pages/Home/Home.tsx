@@ -1,12 +1,14 @@
 import { Button, Heading } from "@/components/ui"
-import { useAuth } from "@/hooks/useAuth"
 import { formatDate } from "@/lib/formatDate"
 import { routes } from "@/lib/routes"
 import { Link } from "react-router-dom"
 import { UserSkeleton } from "./UserSkeleton"
+import { useAppSelector } from "@/hooks/redux"
+import { selectUser } from "@/redux/user/selectors"
 
 export const Home = () => {
-  const { user } = useAuth()
+  const user = useAppSelector(selectUser)
+  console.log(user)
 
   return (
     <div className="flex flex-col gap-4">
