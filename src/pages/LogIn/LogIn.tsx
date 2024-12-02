@@ -32,9 +32,13 @@ export const LogIn = () => {
   })
 
   const onSubmit = async (user: z.infer<typeof LogInFormSchema>) => {
-    dispatch(fetchLogIn(user)).then(() => {
+    try {
+      await dispatch(fetchLogIn(user))
+
       navigate(routes.home)
-    })
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (

@@ -3,12 +3,15 @@ import { formatDate } from "@/lib/formatDate"
 import { routes } from "@/lib/routes"
 import { Link } from "react-router-dom"
 import { UserSkeleton } from "./UserSkeleton"
-import { useAppSelector } from "@/hooks/redux"
-import { selectUser } from "@/redux/user/selectors"
+import { AppStore } from "@/redux/store"
+import { connect } from "react-redux"
+import { UserEntity } from "@/types"
 
-export const Home = () => {
-  const user = useAppSelector(selectUser)
+type HomeComponentProps = {
+  user: UserEntity | null
+}
 
+const HomeComponent: React.FC<HomeComponentProps> = ({ user }) => {
   return (
     <div className="flex flex-col gap-4">
       <Heading>About me</Heading>
@@ -34,3 +37,11 @@ export const Home = () => {
     </div>
   )
 }
+
+const mapStateToProps = function (state: AppStore) {
+  return {
+    user: state.user.user,
+  }
+}
+
+export const Home = connect(mapStateToProps)(HomeComponent)

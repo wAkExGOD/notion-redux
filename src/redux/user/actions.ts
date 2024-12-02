@@ -5,23 +5,6 @@ import { toast } from "@/hooks/useToast"
 import { register } from "@/api/mutations"
 import * as actionTypes from "./actionTypes"
 
-const LOCAL_STORAGE_USER_KEY = "user"
-
-export const initUser = () => (dispatch: AppDispatch) => {
-  dispatch({ type: actionTypes.FETCH_START })
-
-  const user = localStorage.getItem(LOCAL_STORAGE_USER_KEY)
-
-  if (!user) {
-    return
-  }
-
-  dispatch({ type: actionTypes.SET_USER, payload: JSON.parse(user) })
-  dispatch({ type: actionTypes.FETCH_SUCCESS })
-
-  return user
-}
-
 export const fetchLogIn =
   (userCredentials: UserEntityToAuth) => async (dispatch: AppDispatch) => {
     dispatch({ type: actionTypes.FETCH_START })

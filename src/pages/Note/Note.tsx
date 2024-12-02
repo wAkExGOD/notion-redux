@@ -1,6 +1,7 @@
 import { PagesNavigation } from "@/components/common"
 import { Heading, Textarea } from "@/components/ui"
 import { useAppDispatch, useAppSelector } from "@/hooks/redux"
+import { routes } from "@/lib/routes"
 import { fetchNote } from "@/redux/notes/actions"
 import { selectNotes } from "@/redux/notes/selectors"
 import { NoteEntity } from "@/types"
@@ -50,7 +51,7 @@ export const Note = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <PagesNavigation noteId={note.id} />
+      <PagesNavigation noteId={note.id} to={routes.notes.root} />
       <Heading>{note.name}</Heading>
       {note.text && (
         <Textarea value={note.text} rows={7} readOnly className="mt-2" />
