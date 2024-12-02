@@ -1,72 +1,78 @@
 import { useNavigate, useParams } from "react-router-dom"
-import { editNote as editNoteMutation } from "@/api/mutations"
-import { getNote } from "@/api/queries"
 import { NoteForm, NoteFormValues } from "./NoteForm"
-import { toast } from "@/hooks/useToast"
 import { routes } from "@/lib/routes"
+import { useAppDispatch, useAppSelector } from "@/hooks/redux"
+import { selectUser } from "@/redux/user/selectors"
+import { selectNotes } from "@/redux/notes/selectors"
+import { fetchNote, updateNote } from "@/redux/notes/actions"
+import { useEffect, useState } from "react"
+import { NoteEntity } from "@/types"
 
 export const EditNote = () => {
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
+
   const { id } = useParams()
-  const { user } = useAuth()
+  const user = useAppSelector(selectUser)
+  const notes = useAppSelector(selectNotes)
 
-  // const {
-  //   data: note,
-  //   isLoading,
-  //   error,
-  // } = useQuery({
-  //   enabled: Boolean(id),
-  //   queryKey: ["notes", id],
-  //   queryFn: () => getNote(String(id)),
-  // })
-
-  // const { mutate: editNote, isPending } = useMutation({
-  //   mutationFn: editNoteMutation,
-  //   onSuccess: (note) => {
-  //     toast({
-  //       title: `You have successfully edited note #${id}`,
-  //     })
-
-  //     refetchNotes()
-  //     queryClient.setQueryData(["notes", id], note)
-
-  //     navigate(routes.notes.root)
-  //   },
-  //   onError: (error) =>
-  //     toast({
-  //       title: "Note editing failed",
-  //       description: error.message,
-  //       variant: "destructive",
-  //     }),
-  // })
+  const [note, setNote] = useState<NoteEntity | null>(null)
+  const { loading, error } = useAppSelector((state) => state.notes)
 
   const handleSubmit = (editedNote: NoteFormValues) => {
+    if (!id || !user) {
+      return
+    }
+
+    dispatch(updateNote({ ...note, ...editedNote, id, userId: user.id })).then(
+      (createdNote) => {
+        if (!createdNote) {
+          return
+        }
+
+        navigate(routes.notes._create(createdNote.id))
+      }
+    )
+  }
+
+  useEffect(() => {
+    const oldNote = notes.find(({ id: noteId }) => noteId === id)
+
+    if (oldNote) {
+      return setNote(oldNote)
+    }
+
     if (!id) {
       return
     }
 
-    // editNote({ ...note, ...editedNote, id, userId: user.id })
-    console.log("editNote", editedNote)
+    dispatch(fetchNote(id)).then((note) => {
+      if (!note) {
+        return
+      }
+
+      setNote(note)
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  if (loading) {
+    return <p>Loading note...</p>
   }
 
-  // if (isLoading) {
-  //   return <p>Loading note...</p>
-  // }
+  if (error) {
+    return <p className="text-red-500">There is no such note.</p>
+  }
 
-  // if (error) {
-  //   return <p className="text-red-500">There is no such note.</p>
-  // }
-
-  // if (!note) {
-  //   return <p className="text-red-500">Can't load note #{id}</p>
-  // }
+  if (!note) {
+    return <p className="text-red-500">Can't load note #{id}</p>
+  }
 
   return (
-    // <NoteForm
-    //   onSubmit={handleSubmit}
-    //   initialValues={note}
-    //   processing={isPending}
-    // />
-    <p>note</p>
+    <NoteForm
+      onSubmit={handleSubmit}
+      initialValues={note}
+      processing={loading}
+    />
   )
 }

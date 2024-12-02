@@ -3,25 +3,28 @@ import { AppDispatch } from "../store"
 import { logIn } from "@/api/queries"
 import { toast } from "@/hooks/useToast"
 import { register } from "@/api/mutations"
-import { fetchError, fetchStart, fetchSuccess, setUser } from "./actionTypes"
+import * as actionTypes from "./actionTypes"
 
 const LOCAL_STORAGE_USER_KEY = "user"
 
 export const initUser = () => (dispatch: AppDispatch) => {
+  dispatch({ type: actionTypes.FETCH_START })
+
   const user = localStorage.getItem(LOCAL_STORAGE_USER_KEY)
 
   if (!user) {
     return
   }
 
-  dispatch({ type: setUser, payload: JSON.parse(user) })
+  dispatch({ type: actionTypes.SET_USER, payload: JSON.parse(user) })
+  dispatch({ type: actionTypes.FETCH_SUCCESS })
 
   return user
 }
 
 export const fetchLogIn =
   (userCredentials: UserEntityToAuth) => async (dispatch: AppDispatch) => {
-    dispatch({ type: fetchStart })
+    dispatch({ type: actionTypes.FETCH_START })
 
     const data = await logIn(userCredentials)
 
@@ -29,7 +32,7 @@ export const fetchLogIn =
       const errorMessage =
         "Error: Incorrect login credentials. Please try again."
       dispatch({
-        type: fetchError,
+        type: actionTypes.FETCH_ERROR,
         payload: new Error(errorMessage),
       })
       toast({
@@ -45,8 +48,8 @@ export const fetchLogIn =
       title: "You have logged in successfully!",
     })
 
-    dispatch({ type: fetchSuccess })
-    dispatch({ type: setUser, payload: user })
+    dispatch({ type: actionTypes.FETCH_SUCCESS })
+    dispatch({ type: actionTypes.SET_USER, payload: user })
     localStorage.setItem(LOCAL_STORAGE_USER_KEY, JSON.stringify(user))
 
     return user
@@ -54,7 +57,7 @@ export const fetchLogIn =
 
 export const fetchRegister =
   (userCredentials: UserEntityToAuth) => async (dispatch: AppDispatch) => {
-    dispatch({ type: fetchStart })
+    dispatch({ type: actionTypes.FETCH_START })
 
     try {
       const user = await register(userCredentials)
@@ -63,8 +66,8 @@ export const fetchRegister =
         title: "You have successfully registered",
       })
 
-      dispatch({ type: fetchSuccess, payload: user })
-      dispatch({ type: setUser, payload: user })
+      dispatch({ type: actionTypes.FETCH_SUCCESS, payload: user })
+      dispatch({ type: actionTypes.SET_USER, payload: user })
       localStorage.setItem(LOCAL_STORAGE_USER_KEY, JSON.stringify(user))
 
       return user
@@ -78,7 +81,7 @@ export const fetchRegister =
   }
 
 export const logOut = () => async (dispatch: AppDispatch) => {
-  dispatch({ type: setUser, payload: null })
+  dispatch({ type: actionTypes.SET_USER, payload: null })
 
   localStorage.setItem(LOCAL_STORAGE_USER_KEY, JSON.stringify(null))
 

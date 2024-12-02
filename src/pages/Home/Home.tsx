@@ -8,7 +8,6 @@ import { selectUser } from "@/redux/user/selectors"
 
 export const Home = () => {
   const user = useAppSelector(selectUser)
-  console.log(user)
 
   return (
     <div className="flex flex-col gap-4">

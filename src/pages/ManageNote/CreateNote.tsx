@@ -1,44 +1,31 @@
 import { useNavigate } from "react-router-dom"
-import { createNote as createNoteMutation } from "@/api/mutations"
-import { useAuth } from "@/hooks/useAuth"
 import { NoteForm, NoteFormValues } from "./NoteForm"
-import { useNotes } from "@/hooks/useNotes"
-import { toast } from "@/hooks/useToast"
 import { routes } from "@/lib/routes"
-import { useAppSelector } from "@/hooks/redux"
+import { useAppDispatch, useAppSelector } from "@/hooks/redux"
 import { selectUser } from "@/redux/user/selectors"
+import { createNote } from "@/redux/notes/actions"
+import { selectIsLoading } from "@/redux/notes/selectors"
 
 export const CreateNote = () => {
-  const user = useAppSelector(selectUser)
-  const { refetch: refetchNotes } = useNotes()
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
-  // const { mutate: createNote, isPending } = useMutation({
-  //   mutationFn: createNoteMutation,
-  //   onSuccess: (note) => {
-  //     toast({
-  //       title: "You have successfully created a note",
-  //     })
-
-  //     refetchNotes()
-
-  //     navigate(routes.notes._create(note.id))
-  //   },
-  //   onError: (error) =>
-  //     toast({
-  //       title: "Note creation failed",
-  //       description: error.message,
-  //       variant: "destructive",
-  //     }),
-  // })
+  const user = useAppSelector(selectUser)
+  const loading = useAppSelector(selectIsLoading)
 
   const handleSubmit = (note: NoteFormValues) => {
-    // createNote({
-    //   ...note,
-    //   userId: user.id,
-    // })
-    console.log("createNote")
+    if (!user) {
+      return
+    }
+
+    dispatch(createNote({ ...note, userId: user.id })).then((createdNote) => {
+      if (!createdNote) {
+        return
+      }
+
+      navigate(routes.notes._create(createdNote.id))
+    })
   }
 
-  return <NoteForm onSubmit={handleSubmit} processing={isPending} />
+  return <NoteForm onSubmit={handleSubmit} processing={loading} />
 }

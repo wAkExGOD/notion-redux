@@ -1,0 +1,7 @@
+export const FETCH_START = "NOTES/FETCH/START"
+export const FETCH_ERROR = "NOTES/FETCH/ERROR"
+export const FETCH_SUCCESS = "NOTES/FETCH/SUCCESS"
+export const SET_NOTES = "NOTES/SET"
+export const CREATE_NOTE = "NOTE/CREATE"
+export const UPDATE_NOTE = "NOTE/UPDATE"
+export const DELETE_NOTE = "NOTE/DELETE"

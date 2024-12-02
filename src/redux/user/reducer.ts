@@ -8,15 +8,15 @@ export type UserStore = {
 }
 
 type Action =
-  | { type: typeof actionTypes.fetchStart }
-  | { type: typeof actionTypes.fetchSuccess }
-  | { type: typeof actionTypes.fetchError; payload: Error }
-  | { type: typeof actionTypes.setUser; payload: UserEntity }
+  | { type: typeof actionTypes.FETCH_START }
+  | { type: typeof actionTypes.FETCH_SUCCESS }
+  | { type: typeof actionTypes.FETCH_ERROR; payload: Error }
+  | { type: typeof actionTypes.SET_USER; payload: UserEntity }
 
 const DEFAULT_STATE: UserStore = {
   user: null,
   error: null,
-  loading: false,
+  loading: true,
 } as const
 
 export default function userReducer(
@@ -24,13 +24,13 @@ export default function userReducer(
   action: Action
 ) {
   switch (action.type) {
-    case actionTypes.fetchStart:
+    case actionTypes.FETCH_START:
       return { ...state, loading: true }
-    case actionTypes.fetchSuccess:
+    case actionTypes.FETCH_SUCCESS:
       return { ...state, loading: false }
-    case actionTypes.fetchError:
+    case actionTypes.FETCH_ERROR:
       return { ...state, loading: false, error: action.payload }
-    case actionTypes.setUser:
+    case actionTypes.SET_USER:
       return { ...state, user: action.payload }
     default:
       return state

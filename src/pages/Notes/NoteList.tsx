@@ -1,11 +1,11 @@
-import { useNotes } from "@/hooks/useNotes"
 import { NoteSkeletons } from "./NoteSkeletons"
 import { Note } from "./Note"
+import { useAppSelector } from "@/hooks/redux"
 
 export const NoteList = () => {
-  const { error, isLoading, notes } = useNotes()
+  const { error, loading, notes } = useAppSelector((state) => state.notes)
 
-  if (isLoading) {
+  if (loading) {
     return <NoteSkeletons />
   }
 

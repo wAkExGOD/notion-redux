@@ -1,5 +1,4 @@
 import { Link, useNavigate } from "react-router-dom"
-import { useMutation } from "@tanstack/react-query"
 import { Pencil, Trash } from "lucide-react"
 
 import {
@@ -14,11 +13,10 @@ import {
   AlertDialogTrigger,
   Button,
 } from "@/components/ui"
-import { useNotes } from "@/hooks/useNotes"
-import { toast } from "@/hooks/useToast"
-import { deleteNote as deleteNoteMutation } from "@/api/mutations"
 import { NoteEntity } from "@/types"
 import { routes } from "@/lib/routes"
+import { useAppDispatch } from "@/hooks/redux"
+import { deleteNote } from "@/redux/notes/actions"
 
 type NoteManagementButtonsProps = {
   noteId: NoteEntity["id"]
@@ -28,26 +26,17 @@ export const NoteManagementButtons: React.FC<NoteManagementButtonsProps> = ({
   noteId,
 }) => {
   const navigate = useNavigate()
-  const { refetch: refetchNotes } = useNotes()
+  const dispatch = useAppDispatch()
 
-  const { mutate: deleteNote } = useMutation({
-    mutationFn: deleteNoteMutation,
-    onSuccess: () => {
-      toast({
-        title: `You have successfully deleted note #${noteId}`,
-      })
-
-      refetchNotes()
+  const removeNote = async (id: NoteEntity["id"]) => {
+    try {
+      await dispatch(deleteNote(id))
 
       navigate(routes.notes.root)
-    },
-    onError: (error) =>
-      toast({
-        title: "Registration failed. Please try again later",
-        description: error.message,
-        variant: "destructive",
-      }),
-  })
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <div className="ml-auto flex gap-2">
@@ -72,7 +61,7 @@ export const NoteManagementButtons: React.FC<NoteManagementButtonsProps> = ({
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={() => deleteNote(noteId)}>
+            <AlertDialogAction onClick={() => removeNote(noteId)}>
               Continue
             </AlertDialogAction>
           </AlertDialogFooter>
