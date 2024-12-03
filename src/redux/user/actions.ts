@@ -3,6 +3,7 @@ import { AppDispatch } from "../store"
 import { logIn } from "@/api/queries"
 import { toast } from "@/hooks/useToast"
 import { register } from "@/api/mutations"
+import { LOCAL_STORAGE_USER_KEY } from "./reducer"
 import * as actionTypes from "./actionTypes"
 
 export const fetchLogIn =

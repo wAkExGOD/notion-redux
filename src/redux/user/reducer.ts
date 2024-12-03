@@ -1,7 +1,7 @@
 import { UserEntity } from "@/types"
 import * as actionTypes from "./actionTypes"
 
-const LOCAL_STORAGE_USER_KEY = "user"
+export const LOCAL_STORAGE_USER_KEY = "user"
 
 export type UserStore = {
   user: UserEntity | null
@@ -22,7 +22,7 @@ const initialUser = localStorage.getItem(LOCAL_STORAGE_USER_KEY)
 const DEFAULT_STATE: UserStore = {
   user: initialUser,
   error: null,
-  loading: Boolean(!initialUser),
+  loading: false,
 } as const
 
 export default function userReducer(

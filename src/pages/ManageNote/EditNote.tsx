@@ -7,6 +7,7 @@ import { selectNotes } from "@/redux/notes/selectors"
 import { fetchNote, updateNote } from "@/redux/notes/actions"
 import { useEffect, useState } from "react"
 import { NoteEntity } from "@/types"
+import { toast } from "@/hooks/useToast"
 
 export const EditNote = () => {
   const dispatch = useAppDispatch()
@@ -55,6 +56,21 @@ export const EditNote = () => {
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  useEffect(() => {
+    if (!note || !user) {
+      return
+    }
+
+    if (note.userId !== user.id) {
+      navigate(routes.notes.root)
+
+      toast({
+        title: "You don't have permission to access this note",
+        variant: "destructive",
+      })
+    }
+  }, [note])
 
   if (loading) {
     return <p>Loading note...</p>

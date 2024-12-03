@@ -1,19 +1,23 @@
 import { PagesNavigation } from "@/components/common"
 import { Heading, Textarea } from "@/components/ui"
 import { useAppDispatch, useAppSelector } from "@/hooks/redux"
+import { toast } from "@/hooks/useToast"
 import { routes } from "@/lib/routes"
 import { fetchNote } from "@/redux/notes/actions"
 import { selectNotes } from "@/redux/notes/selectors"
+import { selectUser } from "@/redux/user/selectors"
 import { NoteEntity } from "@/types"
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 
 export const Note = () => {
   const { id } = useParams()
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
 
   const [note, setNote] = useState<NoteEntity | null>(null)
   const notes = useAppSelector(selectNotes)
+  const user = useAppSelector(selectUser)
   const { loading, error } = useAppSelector((state) => state.notes)
 
   useEffect(() => {
@@ -36,6 +40,21 @@ export const Note = () => {
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  useEffect(() => {
+    if (!note || !user) {
+      return
+    }
+
+    if (note.userId !== user.id) {
+      navigate(routes.notes.root)
+
+      toast({
+        title: "You don't have permission to access this note",
+        variant: "destructive",
+      })
+    }
+  }, [note])
 
   if (loading) {
     return <p>Loading note...</p>
