@@ -1,7 +1,6 @@
 import { PagesNavigation } from "@/components/common"
 import { Heading, Textarea } from "@/components/ui"
 import { useAppDispatch, useAppSelector } from "@/hooks/redux"
-import { toast } from "@/hooks/useToast"
 import { routes } from "@/lib/routes"
 import { fetchNote } from "@/redux/notes/actions"
 import { selectUser } from "@/redux/user/selectors"
@@ -45,12 +44,7 @@ export const Note = () => {
     }
 
     if (note.userId !== user.id) {
-      navigate(routes.notes.root)
-
-      toast({
-        title: "You don't have permission to access this note",
-        variant: "destructive",
-      })
+      navigate(routes.notFound, { replace: true })
     }
   }, [note])
 
@@ -59,11 +53,11 @@ export const Note = () => {
   }
 
   if (error) {
-    return <p className="text-red-500">There is no such note</p>
+    return <p className="text-red-500">Can't load this note.</p>
   }
 
   if (!note) {
-    return <p className="text-red-500">Can't load note #{id}</p>
+    return navigate(routes.notFound, { replace: true })
   }
 
   return (
