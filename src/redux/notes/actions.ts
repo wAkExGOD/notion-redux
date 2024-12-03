@@ -22,6 +22,7 @@ export const fetchNotes =
       }
 
       dispatch({ type: actionTypes.FETCH_SUCCESS })
+      dispatch({ type: actionTypes.SET_NOTES_FETCHED })
       dispatch({ type: actionTypes.SET_NOTES, payload: notes })
     } catch (error) {
       const errorMessage = (error as Error)?.message || "Error"

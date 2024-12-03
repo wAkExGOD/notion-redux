@@ -1,9 +1,24 @@
 import { NoteSkeletons } from "./NoteSkeletons"
 import { Note } from "./Note"
-import { useAppSelector } from "@/hooks/redux"
+import { useAppDispatch, useAppSelector } from "@/hooks/redux"
+import { selectUser } from "@/redux/user/selectors"
+import { selectIsFetched } from "@/redux/notes/selectors"
+import { useEffect } from "react"
+import { fetchNotes } from "@/redux/notes/actions"
 
 export const NoteList = () => {
+  const dispatch = useAppDispatch()
+  const user = useAppSelector(selectUser)
+  const firstFetched = useAppSelector(selectIsFetched)
   const { error, loading, notes } = useAppSelector((state) => state.notes)
+
+  useEffect(() => {
+    if (!user || firstFetched) {
+      return
+    }
+
+    dispatch(fetchNotes(user.id))
+  }, [user])
 
   if (loading) {
     return <NoteSkeletons />

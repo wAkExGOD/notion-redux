@@ -4,7 +4,6 @@ import { useAppDispatch, useAppSelector } from "@/hooks/redux"
 import { toast } from "@/hooks/useToast"
 import { routes } from "@/lib/routes"
 import { fetchNote } from "@/redux/notes/actions"
-import { selectNotes } from "@/redux/notes/selectors"
 import { selectUser } from "@/redux/user/selectors"
 import { NoteEntity } from "@/types"
 import { useEffect, useState } from "react"
@@ -16,9 +15,8 @@ export const Note = () => {
   const navigate = useNavigate()
 
   const [note, setNote] = useState<NoteEntity | null>(null)
-  const notes = useAppSelector(selectNotes)
   const user = useAppSelector(selectUser)
-  const { loading, error } = useAppSelector((state) => state.notes)
+  const { notes, loading, error } = useAppSelector((state) => state.notes)
 
   useEffect(() => {
     const oldNote = notes.find(({ id: noteId }) => noteId === id)
