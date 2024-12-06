@@ -1,7 +1,7 @@
 import { UserEntity } from "@/types"
 import * as actionTypes from "./actionTypes"
 
-export const LOCAL_STORAGE_USER_KEY = "user"
+export const LOCAL_STORAGE_USER_ID_KEY = "user-id"
 
 export type UserStore = {
   user: UserEntity | null
@@ -15,12 +15,8 @@ type Action =
   | { type: typeof actionTypes.FETCH_ERROR; payload: Error }
   | { type: typeof actionTypes.SET_USER; payload: UserEntity }
 
-const initialUser = localStorage.getItem(LOCAL_STORAGE_USER_KEY)
-  ? JSON.parse(localStorage.getItem(LOCAL_STORAGE_USER_KEY) as string)
-  : null
-
 const DEFAULT_STATE: UserStore = {
-  user: initialUser,
+  user: null,
   error: null,
   loading: false,
 } as const

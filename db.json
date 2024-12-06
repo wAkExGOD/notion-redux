@@ -1,27 +1,4 @@
 {
-  "notes": [
-    {
-      "id": "4fad",
-      "name": "name1",
-      "text": "text1",
-      "userId": "9256",
-      "createdAt": 1733164956691
-    },
-    {
-      "id": "189d",
-      "name": "one more note",
-      "text": "",
-      "userId": "9256",
-      "createdAt": 1733171541378
-    }
-  ],
-  "users": [
-    {
-      "id": "9256",
-      "email": "test1@mail.ru",
-      "password": "11111111Aa",
-      "repeatPassword": "11111111Aa",
-      "createdAt": 1733083840497
-    }
-  ]
+  "notes": [],
+  "users": []
 }
