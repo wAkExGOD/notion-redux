@@ -1,4 +1,4 @@
-import { NoteEntity } from "@/types"
+import { Note } from "@/types"
 
 export const routes = {
   home: "/",
@@ -9,10 +9,10 @@ export const routes = {
     create: "/notes/create",
     edit: {
       template: "/notes/edit/:id",
-      _create: (id: NoteEntity["id"]) => `/notes/edit/${id}`,
+      _create: (id: Note["id"]) => `/notes/edit/${id}`,
     },
     template: "/notes/:id",
-    _create: (id: NoteEntity["id"]) => `/notes/${id}`,
+    _create: (id: Note["id"]) => `/notes/${id}`,
   },
   notFound: "/404",
 } as const

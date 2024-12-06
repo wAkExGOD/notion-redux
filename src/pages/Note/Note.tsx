@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/redux"
 import { routes } from "@/lib/routes"
 import { fetchNote } from "@/redux/notes/actions"
 import { selectUser } from "@/redux/user/selectors"
-import { NoteEntity } from "@/types"
+import { Note as NoteEntity } from "@/types"
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 
@@ -57,7 +57,9 @@ export const Note = () => {
   }
 
   if (!note) {
-    return navigate(routes.notFound, { replace: true })
+    navigate(routes.notFound, { replace: true })
+
+    return null
   }
 
   return (

@@ -1,8 +1,8 @@
 import {
-  NoteEntity,
-  NoteEntityToCreate,
-  NoteEntityToUpdate,
-  UserEntity,
+  Note,
+  NoteToCreate,
+  NoteToUpdate,
+  User,
 } from "@/types"
 import { AppDispatch } from "../store"
 import * as queries from "@/api/queries"
@@ -11,7 +11,7 @@ import * as actionTypes from "./actionTypes"
 import { toast } from "@/hooks/useToast"
 
 export const fetchNotes =
-  (userId: UserEntity["id"]) => async (dispatch: AppDispatch) => {
+  (userId: User["id"]) => async (dispatch: AppDispatch) => {
     dispatch({ type: actionTypes.FETCH_START })
 
     try {
@@ -38,7 +38,7 @@ export const fetchNotes =
   }
 
 export const fetchNote =
-  (noteId: NoteEntity["id"]) => async (dispatch: AppDispatch) => {
+  (noteId: Note["id"]) => async (dispatch: AppDispatch) => {
     dispatch({ type: actionTypes.FETCH_START })
 
     try {
@@ -66,7 +66,7 @@ export const fetchNote =
   }
 
 export const createNote =
-  (note: NoteEntityToCreate) => async (dispatch: AppDispatch) => {
+  (note: NoteToCreate) => async (dispatch: AppDispatch) => {
     dispatch({ type: actionTypes.FETCH_START })
 
     try {
@@ -94,7 +94,7 @@ export const createNote =
   }
 
 export const updateNote =
-  (note: NoteEntityToUpdate) => async (dispatch: AppDispatch) => {
+  (note: NoteToUpdate) => async (dispatch: AppDispatch) => {
     dispatch({ type: actionTypes.FETCH_START })
 
     try {
@@ -122,7 +122,7 @@ export const updateNote =
   }
 
 export const deleteNote =
-  (noteId: NoteEntity["id"]) => async (dispatch: AppDispatch) => {
+  (noteId: Note["id"]) => async (dispatch: AppDispatch) => {
     dispatch({ type: actionTypes.FETCH_START })
 
     try {

@@ -5,10 +5,10 @@ import { Link } from "react-router-dom"
 import { UserSkeleton } from "./UserSkeleton"
 import { AppStore } from "@/redux/store"
 import { connect } from "react-redux"
-import { UserEntity } from "@/types"
+import { User } from "@/types"
 
 type HomeComponentProps = {
-  user: UserEntity | null
+  user: User | null
 }
 
 const HomeComponent: React.FC<HomeComponentProps> = ({ user }) => {

@@ -1,20 +1,20 @@
-export type UserEntity = {
+export type User = {
   id: string
   email: string
   password: string
   createdAt: number
 }
 
-export type UserEntityToAuth = Omit<UserEntity, "id" | "createdAt">
+export type UserToAuth = Omit<User, "id" | "createdAt">
 
-export type NoteEntity = {
+export type Note = {
   id: string
-  userId: UserEntity["id"]
+  userId: User["id"]
   name: string
   text: string
   createdAt: number
 }
 
-export type NoteEntityToCreate = Omit<NoteEntity, "id" | "createdAt">
+export type NoteToCreate = Omit<Note, "id" | "createdAt">
 
-export type NoteEntityToUpdate = Omit<NoteEntity, "createdAt">
+export type NoteToUpdate = Omit<Note, "createdAt">

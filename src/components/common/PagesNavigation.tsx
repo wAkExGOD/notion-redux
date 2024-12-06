@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom"
 import { ChevronLeft } from "lucide-react"
-import { NoteEntity } from "@/types"
+import { Note } from "@/types"
 import { NoteManagementButtons } from "./NoteManagementButtons"
 import { Button } from "../ui"
 
 type PagesNavigation = {
-  noteId?: NoteEntity["id"]
+  noteId?: Note["id"]
   to?: string
 }
 

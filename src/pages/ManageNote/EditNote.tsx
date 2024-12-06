@@ -6,7 +6,7 @@ import { selectUser } from "@/redux/user/selectors"
 import { selectNotes } from "@/redux/notes/selectors"
 import { fetchNote, updateNote } from "@/redux/notes/actions"
 import { useEffect, useState } from "react"
-import { NoteEntity } from "@/types"
+import { Note } from "@/types"
 
 export const EditNote = () => {
   const dispatch = useAppDispatch()
@@ -16,7 +16,7 @@ export const EditNote = () => {
   const user = useAppSelector(selectUser)
   const notes = useAppSelector(selectNotes)
 
-  const [note, setNote] = useState<NoteEntity | null>(null)
+  const [note, setNote] = useState<Note | null>(null)
   const { loading, error } = useAppSelector((state) => state.notes)
 
   const handleSubmit = (editedNote: NoteFormValues) => {
@@ -75,7 +75,9 @@ export const EditNote = () => {
   }
 
   if (!note) {
-    return navigate(routes.notFound, { replace: true })
+    navigate(routes.notFound, { replace: true })
+
+    return null
   }
 
   return (

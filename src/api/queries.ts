@@ -1,17 +1,17 @@
-import { NoteEntity, UserEntity, UserEntityToAuth } from "@/types"
+import { Note, User, UserToAuth } from "@/types"
 import { request } from "./request"
 
-export function logIn(user: UserEntityToAuth) {
+export function logIn(user: UserToAuth) {
   const params = new URLSearchParams(user)
 
-  return request<UserEntity[]>(`/users?${params}`)
+  return request<User[]>(`/users?${params}`)
 }
 
-export function getNote(id: NoteEntity["id"]) {
-  return request<NoteEntity>(`/notes/${id}`)
+export function getNote(id: Note["id"]) {
+  return request<Note>(`/notes/${id}`)
 }
 
-export function getNotes(userId?: UserEntity["id"]) {
+export function getNotes(userId?: User["id"]) {
   if (!userId) {
     return []
   }
@@ -20,13 +20,13 @@ export function getNotes(userId?: UserEntity["id"]) {
     userId,
   })
 
-  return request<NoteEntity[]>(`/notes?${params}`)
+  return request<Note[]>(`/notes?${params}`)
 }
 
-export function getUser(id: UserEntity["id"]) {
-  return request<UserEntity>(`/users/${id}`)
+export function getUser(id: User["id"]) {
+  return request<User>(`/users/${id}`)
 }
 
-export function getUsersByEmail(email: UserEntity["email"]) {
-  return request<UserEntity[]>(`/users?email=${email}`)
+export function getUsersByEmail(email: User["email"]) {
+  return request<User[]>(`/users?email=${email}`)
 }

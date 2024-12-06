@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 import { Card } from "@/components/ui"
 import { NoteManagementButtons } from "@/components/common"
 import { formatDate } from "@/lib/formatDate"
-import { NoteEntity } from "@/types"
+import { Note as NoteEntity } from "@/types"
 import { routes } from "@/lib/routes"
 
 type NoteProps = {

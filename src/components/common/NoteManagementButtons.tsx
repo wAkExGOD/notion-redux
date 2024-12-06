@@ -13,13 +13,13 @@ import {
   AlertDialogTrigger,
   Button,
 } from "@/components/ui"
-import { NoteEntity } from "@/types"
+import { Note } from "@/types"
 import { routes } from "@/lib/routes"
 import { useAppDispatch } from "@/hooks/redux"
 import { deleteNote } from "@/redux/notes/actions"
 
 type NoteManagementButtonsProps = {
-  noteId: NoteEntity["id"]
+  noteId: Note["id"]
 }
 
 export const NoteManagementButtons: React.FC<NoteManagementButtonsProps> = ({
@@ -28,7 +28,7 @@ export const NoteManagementButtons: React.FC<NoteManagementButtonsProps> = ({
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
-  const removeNote = async (id: NoteEntity["id"]) => {
+  const removeNote = async (id: Note["id"]) => {
     try {
       await dispatch(deleteNote(id))
 

@@ -1,8 +1,8 @@
-import { NoteEntity } from "@/types"
+import { Note } from "@/types"
 import * as actionTypes from "./actionTypes"
 
 export type NotesStore = {
-  notes: NoteEntity[]
+  notes: Note[]
   error: Error | null
   loading: boolean
   fetched: boolean
@@ -12,11 +12,11 @@ type Action =
   | { type: typeof actionTypes.FETCH_START }
   | { type: typeof actionTypes.FETCH_SUCCESS }
   | { type: typeof actionTypes.FETCH_ERROR; payload: Error }
-  | { type: typeof actionTypes.SET_NOTES; payload: NoteEntity[] }
+  | { type: typeof actionTypes.SET_NOTES; payload: Note[] }
   | { type: typeof actionTypes.SET_NOTES_FETCHED }
-  | { type: typeof actionTypes.CREATE_NOTE; payload: NoteEntity }
-  | { type: typeof actionTypes.UPDATE_NOTE; payload: NoteEntity }
-  | { type: typeof actionTypes.DELETE_NOTE; payload: NoteEntity["id"] }
+  | { type: typeof actionTypes.CREATE_NOTE; payload: Note }
+  | { type: typeof actionTypes.UPDATE_NOTE; payload: Note }
+  | { type: typeof actionTypes.DELETE_NOTE; payload: Note["id"] }
 
 const DEFAULT_STATE: NotesStore = {
   notes: [],

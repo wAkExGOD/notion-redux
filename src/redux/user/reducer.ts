@@ -1,10 +1,10 @@
-import { UserEntity } from "@/types"
+import { User } from "@/types"
 import * as actionTypes from "./actionTypes"
 
 export const LOCAL_STORAGE_USER_ID_KEY = "user-id"
 
 export type UserStore = {
-  user: UserEntity | null
+  user: User | null
   error: Error | null
   loading: boolean
 }
@@ -13,7 +13,7 @@ type Action =
   | { type: typeof actionTypes.FETCH_START }
   | { type: typeof actionTypes.FETCH_SUCCESS }
   | { type: typeof actionTypes.FETCH_ERROR; payload: Error }
-  | { type: typeof actionTypes.SET_USER; payload: UserEntity }
+  | { type: typeof actionTypes.SET_USER; payload: User }
 
 const DEFAULT_STATE: UserStore = {
   user: null,

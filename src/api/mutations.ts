@@ -1,35 +1,29 @@
 import { request } from "./request"
-import {
-  NoteEntity,
-  NoteEntityToCreate,
-  NoteEntityToUpdate,
-  UserEntity,
-  UserEntityToAuth,
-} from "@/types"
+import { Note, NoteToCreate, NoteToUpdate, User, UserToAuth } from "@/types"
 
-export function register(user: UserEntityToAuth) {
-  return request<UserEntity>("/users", {
+export function register(user: UserToAuth) {
+  return request<User>("/users", {
     method: "POST",
     body: JSON.stringify({ ...user, createdAt: Date.now() }),
   })
 }
 
-export function createNote(note: NoteEntityToCreate) {
-  return request<NoteEntity>("/notes", {
+export function createNote(note: NoteToCreate) {
+  return request<Note>("/notes", {
     method: "POST",
     body: JSON.stringify({ ...note, createdAt: Date.now() }),
   })
 }
 
-export function editNote(note: NoteEntityToUpdate) {
-  return request<NoteEntity>(`/notes/${note.id}`, {
+export function editNote(note: NoteToUpdate) {
+  return request<Note>(`/notes/${note.id}`, {
     method: "PUT",
     body: JSON.stringify(note),
   })
 }
 
-export function deleteNote(id: NoteEntity["id"]) {
-  return request<NoteEntity>(`/notes/${id}`, {
+export function deleteNote(id: Note["id"]) {
+  return request<Note>(`/notes/${id}`, {
     method: "DELETE",
   })
 }

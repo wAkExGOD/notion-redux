@@ -9,7 +9,7 @@ export const ProtectedRoute = ({ children }: PropsWithChildren) => {
   const isLoading = useAppSelector(selectIsLoading)
 
   if (isLoading) {
-    return null
+    return <p className="text-center text-gray-600">Loading user...</p>
   }
 
   if (!user) {

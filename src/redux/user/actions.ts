@@ -1,4 +1,4 @@
-import { UserEntityToAuth } from "@/types"
+import { UserToAuth } from "@/types"
 import { AppDispatch } from "../store"
 import { getUser, logIn } from "@/api/queries"
 import { toast } from "@/hooks/useToast"
@@ -49,7 +49,7 @@ export const fetchMe = () => async (dispatch: AppDispatch) => {
 }
 
 export const fetchLogIn =
-  (userCredentials: UserEntityToAuth) => async (dispatch: AppDispatch) => {
+  (userCredentials: UserToAuth) => async (dispatch: AppDispatch) => {
     dispatch({ type: actionTypes.FETCH_START })
 
     const data = await logIn(userCredentials)
@@ -82,7 +82,7 @@ export const fetchLogIn =
   }
 
 export const fetchRegister =
-  (userCredentials: UserEntityToAuth) => async (dispatch: AppDispatch) => {
+  (userCredentials: UserToAuth) => async (dispatch: AppDispatch) => {
     dispatch({ type: actionTypes.FETCH_START })
 
     try {
