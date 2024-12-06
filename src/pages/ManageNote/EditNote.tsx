@@ -57,21 +57,21 @@ export const EditNote = () => {
   }, [])
 
   useEffect(() => {
+    if (error) {
+      return navigate(routes.notFound, { replace: true })
+    }
+
     if (!note || !user) {
       return
     }
 
     if (note.userId !== user.id) {
-      navigate(routes.notFound, { replace: true })
+      return navigate(routes.notFound, { replace: true })
     }
-  }, [note])
+  }, [note, error, user])
 
   if (loading) {
     return <p>Loading note...</p>
-  }
-
-  if (error) {
-    return <p className="text-red-500">Can't load this note.</p>
   }
 
   if (!note) {
